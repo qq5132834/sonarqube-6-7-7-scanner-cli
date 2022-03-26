@@ -26,11 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import javax.annotation.Nullable;
 import org.sonarsource.scanner.api.Utils;
 
@@ -62,6 +58,7 @@ class Conf {
     result.putAll(System.getProperties());
     result.putAll(loadEnvironmentProperties());
     result.putAll(cli.properties());
+    result.putAll(this.getCustomProperties());
     result = resolve(result);
 
     // root project base directory must be present and be absolute
@@ -86,6 +83,19 @@ class Conf {
 
   private Properties loadEnvironmentProperties() {
     return Utils.loadEnvironmentProperties(env);
+  }
+
+  private Properties getCustomProperties(){
+    String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+    Properties properties = new Properties();
+    properties.put("sonar.projectName", uuid);
+    properties.put("sonar.projectKey", uuid);
+    properties.put("sonar.projectVersion", "1.0");
+    properties.put("sonar.sources", "C:\\Users\\51328\\Desktop\\checkrule");
+    properties.put("sonar.java.binaries", "C:\\Users\\51328\\Desktop\\sonar-scanner-cli-4.6.2.2472\\sonar-scanner-cli-4.6.2.2472\\target\\classes");
+    properties.put("sonar.host.url", "http://192.168.32.139:9000");
+    properties.put("sonar.sourceEncoding", "UTF-8");
+    return properties;
   }
 
   private Properties loadGlobalProperties() {
