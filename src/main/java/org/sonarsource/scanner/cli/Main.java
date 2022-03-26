@@ -19,6 +19,7 @@
  */
 package org.sonarsource.scanner.cli;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
 import org.sonarsource.scanner.api.EmbeddedScanner;
@@ -54,6 +55,14 @@ public class Main {
   }
 
   public static void main(String[] args) {
+
+    args = new String[]{"-X"};
+    if(args != null){
+      Arrays.stream(args).forEach(e->{
+        System.out.println("scanner-cli:" + e);
+      });
+    }
+
     Logs logs = new Logs(System.out, System.err);
     Exit exit = new Exit();
     Cli cli = new Cli(exit, logs).parse(args);
